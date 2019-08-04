@@ -78,6 +78,7 @@
     </ApplicationDefinition>
     <Compile Include="Model\MetadataItem.cs" />
     <Compile Include="Repositories\ComboBoxItems.cs" />
+    <Compile Include="Services\XmlControl.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\DocumentDetailViewModel.cs" />
@@ -151,9 +152,7 @@
   <ItemGroup>
     <Resource Include="Images\magnifying_glass.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

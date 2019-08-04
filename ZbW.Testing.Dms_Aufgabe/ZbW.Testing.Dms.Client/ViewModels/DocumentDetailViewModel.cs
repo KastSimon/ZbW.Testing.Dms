@@ -1,4 +1,7 @@
-﻿namespace ZbW.Testing.Dms.Client.ViewModels
+﻿using System.Windows;
+using ZbW.Testing.Dms.Client.Model;
+
+namespace ZbW.Testing.Dms.Client.ViewModels
 {
     using System;
     using System.Collections.Generic;
@@ -164,9 +167,16 @@
 
         private void OnCmdSpeichern()
         {
-            // TODO: Add your Code here
+            MetadataItem metadataItem = new MetadataItem(_bezeichnung,_valutaDatum,_selectedTypItem,_stichwoerter);
 
-            _navigateBack();
+            if (metadataItem.ValideMetadata())
+            {
+
+                _navigateBack();
+            }
+           
+
+
         }
     }
 }
