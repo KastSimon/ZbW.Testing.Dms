@@ -52,3 +52,4 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyFileVersion("1.0.0.0")]
 
 [assembly: InternalsVisibleTo("ZbW.Testing.Dms.Library.UnitTests")]
+[assembly: InternalsVisibleTo("ZbW.Testing.Dms.Library.InterfaceTests")]

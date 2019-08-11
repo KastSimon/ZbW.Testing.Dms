@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Microsoft.Win32;
 using ZbW.Testing.Dms.Client.ViewModels;
 using ZbW.Testing.Dms.Client.Views;
+using ZbW.Testing.Dms.Client.TestableObjects;
 
 namespace ZbW.Testing.Dms.Client.Model
 {
@@ -42,13 +43,13 @@ namespace ZbW.Testing.Dms.Client.Model
             get { return stichwoerter; }
         }
 
-        public bool ValideMetadata()
+        public bool ValideMetadata(TestableMessageBox messageBox)
         {
             if (!string.IsNullOrEmpty(bezeichung) && valutaDatum != null && !string.IsNullOrEmpty(selectedTypItems))
                 return true;
             else
-                MessageBox.Show("Es müssen alle Pflichtfelder ausgefüllt werden");
 
+                messageBox.Show("Es müssen alle Pflichtfelder ausgefüllt werden");
             return false;
         }
 

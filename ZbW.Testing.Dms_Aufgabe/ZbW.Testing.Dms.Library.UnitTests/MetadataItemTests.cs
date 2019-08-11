@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FakeItEasy;
+using ZbW.Testing.Dms.Client.TestableObjects;
 
 namespace ZbW.Testing.Dms.Library.UnitTests
 {
@@ -18,9 +20,9 @@ namespace ZbW.Testing.Dms.Library.UnitTests
         { 
             // arrange
             var metadataItem = new MetadataItem("Simon",DateTime.Now,"Beleg","Test01");
-
+            var testableMessageBoxStub = A.Fake<TestableMessageBox>();
             // act
-            var result = metadataItem.ValideMetadata();
+            var result = metadataItem.ValideMetadata(testableMessageBoxStub);
 
             // assert
             Assert.That(result, Is.True);
@@ -31,9 +33,9 @@ namespace ZbW.Testing.Dms.Library.UnitTests
         {
             // arrange
             var metadataItem = new MetadataItem("Simon", DateTime.Now, "Beleg", "");
-
+            var testableMessageBoxStub = A.Fake<TestableMessageBox>();
             // act
-            var result = metadataItem.ValideMetadata();
+            var result = metadataItem.ValideMetadata(testableMessageBoxStub);
 
             // assert
             Assert.That(result, Is.True);
@@ -44,9 +46,9 @@ namespace ZbW.Testing.Dms.Library.UnitTests
         {
             // arrange
             var metadataItem = new MetadataItem("", DateTime.Now, "Beleg", "Test01");
-
+            var testableMessageBoxStub = A.Fake<TestableMessageBox>();
             // act
-            var result = metadataItem.ValideMetadata();
+            var result = metadataItem.ValideMetadata(testableMessageBoxStub);
 
             // assert
             Assert.That(result, Is.False);
@@ -57,9 +59,9 @@ namespace ZbW.Testing.Dms.Library.UnitTests
         {
             // arrange
             var metadataItem = new MetadataItem("Simon", null, "Beleg", "Test01");
-
+            var testableMessageBoxStub = A.Fake<TestableMessageBox>();
             // act
-            var result = metadataItem.ValideMetadata();
+            var result = metadataItem.ValideMetadata(testableMessageBoxStub);
 
             // assert
             Assert.That(result, Is.False);
@@ -70,9 +72,9 @@ namespace ZbW.Testing.Dms.Library.UnitTests
         {
             // arrange
             var metadataItem = new MetadataItem("Simon", DateTime.Now, "", "Test01");
-
+            var testableMessageBoxStub = A.Fake<TestableMessageBox>();
             // act
-            var result = metadataItem.ValideMetadata();
+            var result = metadataItem.ValideMetadata(testableMessageBoxStub);
 
             // assert
             Assert.That(result, Is.False);

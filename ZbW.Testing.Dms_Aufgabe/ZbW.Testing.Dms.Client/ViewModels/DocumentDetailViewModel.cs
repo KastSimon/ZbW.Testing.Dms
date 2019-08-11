@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using ZbW.Testing.Dms.Client.Model;
+using ZbW.Testing.Dms.Client.TestableObjects;
 
 namespace ZbW.Testing.Dms.Client.ViewModels
 {
@@ -168,12 +169,14 @@ namespace ZbW.Testing.Dms.Client.ViewModels
         private void OnCmdSpeichern()
         {
             MetadataItem metadataItem = new MetadataItem(_bezeichnung,_valutaDatum,_selectedTypItem,_stichwoerter);
+            
 
-            if (metadataItem.ValideMetadata())
+            if (metadataItem.ValideMetadata(new TestableMessageBox()))
             {
 
                 _navigateBack();
             }
+           
            
 
 
