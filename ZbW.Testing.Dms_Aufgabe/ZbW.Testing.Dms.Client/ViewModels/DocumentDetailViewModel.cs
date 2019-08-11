@@ -1,12 +1,15 @@
 ﻿using System.Windows;
+using NUnit.Framework.Internal;
 using ZbW.Testing.Dms.Client.Model;
+using ZbW.Testing.Dms.Client.Services;
 using ZbW.Testing.Dms.Client.TestableObjects;
+using ZbW.Testing.Dms.Client;
 
 namespace ZbW.Testing.Dms.Client.ViewModels
 {
     using System;
     using System.Collections.Generic;
-
+    using System.Configuration;
     using Microsoft.Win32;
 
     using Prism.Commands;
@@ -168,12 +171,28 @@ namespace ZbW.Testing.Dms.Client.ViewModels
 
         private void OnCmdSpeichern()
         {
-            MetadataItem metadataItem = new MetadataItem(_bezeichnung,_valutaDatum,_selectedTypItem,_stichwoerter);
+            MetadataItem metadataItem = new MetadataItem();
+            metadataItem.Bezeichung = _bezeichnung;
+            metadataItem.ValutaDatum = _valutaDatum;
+            metadataItem.SelectedTypItems = _selectedTypItem;
+            metadataItem.Stichwoerter = _stichwoerter;
+
             
+            AppSettingsReader appSettingsReader = new AppSettingsReader();
+            var appSettingsString = appSettingsReader.GetValue("RepositoryDir", typeof(string));
 
             if (metadataItem.ValideMetadata(new TestableMessageBox()))
             {
-
+                try
+                {
+                    var xmlControl = new XmlControl();
+                    xmlControl.SaveData(metadataItem, (string)appSettingsString + "\\Test.Xml");
+                }
+                catch (Exception e)
+                {
+                    var testableMessageBox = new TestableMessageBox();
+                    testableMessageBox.Show(e.Message);
+                }
                 _navigateBack();
             }
            

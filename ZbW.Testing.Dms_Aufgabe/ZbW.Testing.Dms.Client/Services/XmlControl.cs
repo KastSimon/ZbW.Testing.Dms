@@ -10,7 +10,7 @@ namespace ZbW.Testing.Dms.Client.Services
 {
     public class XmlControl
     {
-        public static void SaveData(object obj, string fileName)
+        public virtual void SaveData(object obj, string fileName)
         {
             XmlSerializer sr = new XmlSerializer(obj.GetType());
             TextWriter writer = new StreamWriter(fileName);
