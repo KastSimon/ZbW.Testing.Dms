@@ -19,7 +19,11 @@ namespace ZbW.Testing.Dms.Library.UnitTests
         [Test] public void ValideMetadata_ValideData_RetrunTrue()
         { 
             // arrange
-            var metadataItem = new MetadataItem("Simon",DateTime.Now,"Beleg","Test01");
+            var metadataItem = new MetadataItem();
+            metadataItem.Bezeichung = "Simon";
+            metadataItem.ValutaDatum = DateTime.Now;
+            metadataItem.SelectedTypItems = "Beleg";
+            metadataItem.Stichwoerter = "Test01";
             var testableMessageBoxStub = A.Fake<TestableMessageBox>();
             // act
             var result = metadataItem.ValideMetadata(testableMessageBoxStub);
@@ -32,7 +36,11 @@ namespace ZbW.Testing.Dms.Library.UnitTests
         public void ValideMetadata_NoCue_RetrunTrue()
         {
             // arrange
-            var metadataItem = new MetadataItem("Simon", DateTime.Now, "Beleg", "");
+            var metadataItem = new MetadataItem();
+            metadataItem.Bezeichung = "Simon";
+            metadataItem.ValutaDatum = DateTime.Now;
+            metadataItem.SelectedTypItems = "Beleg";
+            metadataItem.Stichwoerter = "";
             var testableMessageBoxStub = A.Fake<TestableMessageBox>();
             // act
             var result = metadataItem.ValideMetadata(testableMessageBoxStub);
@@ -45,7 +53,11 @@ namespace ZbW.Testing.Dms.Library.UnitTests
         public void ValideMetadata_NoName_RetrunFalse()
         {
             // arrange
-            var metadataItem = new MetadataItem("", DateTime.Now, "Beleg", "Test01");
+            var metadataItem = new MetadataItem();
+            metadataItem.Bezeichung = "";
+            metadataItem.ValutaDatum = DateTime.Now;
+            metadataItem.SelectedTypItems = "Beleg";
+            metadataItem.Stichwoerter = "Test01";
             var testableMessageBoxStub = A.Fake<TestableMessageBox>();
             // act
             var result = metadataItem.ValideMetadata(testableMessageBoxStub);
@@ -58,7 +70,11 @@ namespace ZbW.Testing.Dms.Library.UnitTests
         public void ValideMetadata_DateIsNull_RetrunFalse()
         {
             // arrange
-            var metadataItem = new MetadataItem("Simon", null, "Beleg", "Test01");
+            var metadataItem = new MetadataItem();
+            metadataItem.Bezeichung = "Simon";
+            metadataItem.ValutaDatum = null;
+            metadataItem.SelectedTypItems = "Beleg";
+            metadataItem.Stichwoerter = "Test01";
             var testableMessageBoxStub = A.Fake<TestableMessageBox>();
             // act
             var result = metadataItem.ValideMetadata(testableMessageBoxStub);
@@ -71,7 +87,11 @@ namespace ZbW.Testing.Dms.Library.UnitTests
         public void ValideMetadata_NoSelecedTypItems_RetrunFalse()
         {
             // arrange
-            var metadataItem = new MetadataItem("Simon", DateTime.Now, "", "Test01");
+            var metadataItem = new MetadataItem();
+            metadataItem.Bezeichung = "Simon";
+            metadataItem.ValutaDatum = DateTime.Now;
+            metadataItem.SelectedTypItems = "";
+            metadataItem.Stichwoerter = "Test01";
             var testableMessageBoxStub = A.Fake<TestableMessageBox>();
             // act
             var result = metadataItem.ValideMetadata(testableMessageBoxStub);

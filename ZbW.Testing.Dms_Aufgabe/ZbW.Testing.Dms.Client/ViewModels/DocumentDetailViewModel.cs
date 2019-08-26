@@ -39,8 +39,20 @@ namespace ZbW.Testing.Dms.Client.ViewModels
 
         private DateTime? _valutaDatum;
 
+        private FileControl fileControl;
+
+        private MetadataItem metadataItem;
+
+        private TestableDirectory dir = new TestableDirectory();
+
+        private TestableGUID guid = new TestableGUID();
+
+        private TestableFile file = new TestableFile();
+
         public DocumentDetailViewModel(string benutzer, Action navigateBack)
         {
+            metadataItem = new MetadataItem();
+
             _navigateBack = navigateBack;
             Benutzer = benutzer;
             Erfassungsdatum = DateTime.Now;
@@ -48,6 +60,8 @@ namespace ZbW.Testing.Dms.Client.ViewModels
 
             CmdDurchsuchen = new DelegateCommand(OnCmdDurchsuchen);
             CmdSpeichern = new DelegateCommand(OnCmdSpeichern);
+
+          fileControl = new  FileControl(dir, guid, file);
         }
 
         public string Stichwoerter
@@ -171,30 +185,14 @@ namespace ZbW.Testing.Dms.Client.ViewModels
 
         private void OnCmdSpeichern()
         {
-            MetadataItem metadataItem = new MetadataItem();
             metadataItem.Bezeichung = _bezeichnung;
             metadataItem.ValutaDatum = _valutaDatum;
             metadataItem.SelectedTypItems = _selectedTypItem;
             metadataItem.Stichwoerter = _stichwoerter;
 
-            
-            AppSettingsReader appSettingsReader = new AppSettingsReader();
-            var appSettingsString = appSettingsReader.GetValue("RepositoryDir", typeof(string));
-
-            if (metadataItem.ValideMetadata(new TestableMessageBox()))
-            {
-                try
-                {
-                    var xmlControl = new XmlControl();
-                    xmlControl.SaveData(metadataItem, (string)appSettingsString + "\\Test.Xml");
-                }
-                catch (Exception e)
-                {
-                    var testableMessageBox = new TestableMessageBox();
-                    testableMessageBox.Show(e.Message);
-                }
+            if(fileControl.Save(metadataItem, _filePath))
                 _navigateBack();
-            }
+            
            
            
 

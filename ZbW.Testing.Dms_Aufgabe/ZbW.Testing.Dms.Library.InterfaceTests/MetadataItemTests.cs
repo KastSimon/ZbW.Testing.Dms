@@ -19,7 +19,11 @@ namespace ZbW.Testing.Dms.Library.InterfaceTests
         [Test] public void ValideMetadata_CheckDependency_TestableMessageBoxCalled()
         { 
             // arrange
-            var metadataItem = new MetadataItem("Simon",DateTime.Now,"","");
+            var metadataItem = new MetadataItem();
+            metadataItem.Bezeichung = "Simon";
+            metadataItem.ValutaDatum = DateTime.Now;
+            metadataItem.SelectedTypItems = "";
+            metadataItem.Stichwoerter = "";
             var testableMessageBoxMock = A.Fake<TestableMessageBox>();
             // act
             var result = metadataItem.ValideMetadata(testableMessageBoxMock);

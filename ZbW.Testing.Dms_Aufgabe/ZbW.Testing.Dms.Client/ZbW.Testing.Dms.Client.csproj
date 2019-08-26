@@ -78,7 +78,11 @@
     </ApplicationDefinition>
     <Compile Include="Model\MetadataItem.cs" />
     <Compile Include="Repositories\ComboBoxItems.cs" />
+    <Compile Include="Services\FileControl.cs" />
     <Compile Include="Services\XmlControl.cs" />
+    <Compile Include="TestableObjects\TestableDirectory.cs" />
+    <Compile Include="TestableObjects\TestableFile.cs" />
+    <Compile Include="TestableObjects\TestableGUID.cs" />
     <Compile Include="TestableObjects\TestableMessageBox.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
@@ -142,7 +146,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Key.ico" />
