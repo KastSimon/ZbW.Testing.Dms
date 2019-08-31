@@ -39,17 +39,11 @@ namespace ZbW.Testing.Dms.Client.ViewModels
 
         private DateTime? _valutaDatum;
 
-        private FileControl fileControl;
-
         private MetadataItem metadataItem;
 
-        private TestableDirectory dir = new TestableDirectory();
+        private FileControl fileControl;
 
-        private TestableGUID guid = new TestableGUID();
-
-        private TestableFile file = new TestableFile();
-
-        public DocumentDetailViewModel(string benutzer, Action navigateBack)
+        public DocumentDetailViewModel(string benutzer, Action navigateBack,FileControl fileControl)
         {
             metadataItem = new MetadataItem();
 
@@ -61,7 +55,7 @@ namespace ZbW.Testing.Dms.Client.ViewModels
             CmdDurchsuchen = new DelegateCommand(OnCmdDurchsuchen);
             CmdSpeichern = new DelegateCommand(OnCmdSpeichern);
 
-          fileControl = new  FileControl(dir, guid, file);
+          this.fileControl = fileControl;
         }
 
         public string Stichwoerter
@@ -187,7 +181,7 @@ namespace ZbW.Testing.Dms.Client.ViewModels
         {
             metadataItem.Bezeichung = _bezeichnung;
             metadataItem.ValutaDatum = _valutaDatum;
-            metadataItem.SelectedTypItems = _selectedTypItem;
+            metadataItem.DokumentTyp = _selectedTypItem;
             metadataItem.Stichwoerter = _stichwoerter;
 
             if(fileControl.Save(metadataItem, _filePath))

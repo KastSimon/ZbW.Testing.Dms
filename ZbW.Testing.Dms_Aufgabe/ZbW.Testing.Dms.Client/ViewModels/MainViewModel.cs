@@ -4,7 +4,8 @@
 
     using Prism.Commands;
     using Prism.Mvvm;
-
+    using ZbW.Testing.Dms.Client.Services;
+    using ZbW.Testing.Dms.Client.TestableObjects;
     using ZbW.Testing.Dms.Client.Views;
 
     internal class MainViewModel : BindableBase
@@ -13,11 +14,21 @@
 
         private UserControl _content;
 
+        private TestableDirectory dir = new TestableDirectory();
+
+        private TestableGUID guid = new TestableGUID();
+
+        private TestableFile file = new TestableFile();
+
+        private FileControl fileControl;
+
         public MainViewModel(string benutzername)
         {
             Benutzer = benutzername;
             CmdNavigateToSearch = new DelegateCommand(OnCmdNavigateToSearch);
             CmdNavigateToDocumentDetail = new DelegateCommand(OnCmdNavigateToDocumentDetail);
+
+            fileControl = new FileControl(dir, guid, file);
         }
 
         public string Benutzer
@@ -57,12 +68,12 @@
 
         private void OnCmdNavigateToDocumentDetail()
         {
-            Content = new DocumentDetailView(Benutzer, NavigateToSearch);
+            Content = new DocumentDetailView(Benutzer, NavigateToSearch, fileControl);
         }
 
         private void NavigateToSearch()
         {
-            Content = new SearchView();
+            Content = new SearchView(fileControl);
         }
     }
 }

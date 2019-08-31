@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ZbW.Testing.Dms.Client.TestableObjects
 {
-    class TestableFile
+    public class TestableFile
     {
         public virtual void Copy(string sourceFileName, string destFileName)
         {

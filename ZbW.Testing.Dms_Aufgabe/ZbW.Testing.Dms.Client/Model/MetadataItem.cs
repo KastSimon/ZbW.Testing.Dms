@@ -14,6 +14,8 @@ namespace ZbW.Testing.Dms.Client.Model
         private DateTime? valutaDatum;
         private string selectedTypItems;
         private string stichwoerter;
+        private string filePath;
+        private string fileGuid;
 
 
         public string Bezeichung
@@ -28,7 +30,7 @@ namespace ZbW.Testing.Dms.Client.Model
             set { valutaDatum = value; }
         }
 
-        public string SelectedTypItems
+        public string DokumentTyp
         {
             get { return selectedTypItems; }
             set { selectedTypItems = value; }
@@ -38,6 +40,18 @@ namespace ZbW.Testing.Dms.Client.Model
         {
             get { return stichwoerter; }
             set { stichwoerter = value; }
+        }
+
+        public string FilePath
+        {
+            get { return filePath; }
+            set { filePath = value; }
+        }
+
+        public string FileGuid
+        {
+            get { return fileGuid; }
+            set { fileGuid = value; }
         }
 
         public bool ValideMetadata(TestableMessageBox messageBox)

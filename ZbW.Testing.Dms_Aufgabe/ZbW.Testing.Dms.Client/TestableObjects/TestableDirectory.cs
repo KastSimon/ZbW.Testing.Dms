@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ZbW.Testing.Dms.Client.TestableObjects
 {
-    class TestableDirectory
+    public class TestableDirectory
     {
         public virtual bool Exists(string path)
         {
@@ -17,6 +17,11 @@ namespace ZbW.Testing.Dms.Client.TestableObjects
         public virtual DirectoryInfo CreateDirectory(string path)
         {
             return Directory.CreateDirectory(path);
+        }
+
+        public virtual string[] GetFiles(string path, string searchPattern, SearchOption searchOption)
+        {
+            return Directory.GetFiles(path, searchPattern, searchOption);
         }
     }
 }

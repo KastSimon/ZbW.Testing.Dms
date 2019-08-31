@@ -11,21 +11,24 @@ using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
 using ZbW.Testing.Dms.Client.Model;
+using ZbW.Testing.Dms.Client.Services.Interface;
 using ZbW.Testing.Dms.Client.TestableObjects;
 
 namespace ZbW.Testing.Dms.Client.Services
 {
-    class FileControl
+    public class FileControl
     {
         private object repositoryDir;
         private XmlControl xmlControl = new XmlControl();
         private const string BACKSLASH = "\\";
         private const string FILENAMECONTENT = "_Content.Pdf";
         private const string FILENAMEMETADATA = "_Metadata.xml";
+        private const int MAXNUMBERS_OF_LETTERS_FILENAMEMETADATA = 49;
         private string currentGuid;
         private TestableGUID guid;
         private TestableDirectory dir;
         private TestableFile file;
+        private List<MetadataItem> fileList;
 
         public FileControl(TestableDirectory dir, TestableGUID guid, TestableFile file)
         {
@@ -42,20 +45,58 @@ namespace ZbW.Testing.Dms.Client.Services
         {
             currentGuid = Convert.ToString(guid.NewGuid());
             var targetPath = creatFileFolder(obj);
-            if (CreatMetaDataXml(obj, targetPath) && CreateContentFile(sourcePath,targetPath))
+            if (SaveMetaData(obj, targetPath, xmlControl) && CreateContentFile(sourcePath,targetPath))
                 return true;
             else
                 return false;
         }
 
-        private bool CreatMetaDataXml(MetadataItem obj, string targetPath)
+        public List<MetadataItem> Search()
+        {
+            if (dir.Exists(Convert.ToString(repositoryDir)))
+            { 
+            fileList = new List<MetadataItem>();
+            foreach (var file in dir.GetFiles(Convert.ToString(repositoryDir), "*"+FILENAMEMETADATA, SearchOption.AllDirectories))
+            {
+                var metaDataItem = new MetadataItem();
+                metaDataItem = LoadMetaData(file,xmlControl);
+                metaDataItem.FilePath = GetFilePath(file);
+                metaDataItem.FileGuid = GetFileGuid(file);
+                if (metaDataItem != null)
+                {
+                    fileList.Add(metaDataItem);
+                }
+               
+            }
+            return fileList;
+            }
+            else
+            {
+                var testableMessageBox = new TestableMessageBox();
+                testableMessageBox.Show("No File found!");
+                return null;
+            }
+        }
+
+        private string GetFilePath(string fileName) //fileName must includ path
+        {
+            return fileName.Remove(fileName.Length - MAXNUMBERS_OF_LETTERS_FILENAMEMETADATA);
+        }
+
+        private string GetFileGuid(string fileName) //fileName must includ path
+        {
+            var fileGuid = fileName.Split('\\');
+            return fileGuid[fileGuid.Length - 1].TrimEnd('_', 'M', 'e', 't', 'a', 'd', 'a', 't', 'a', '.', 'x', 'm', 'l'); 
+        }
+
+        private bool SaveMetaData(MetadataItem obj, string targetPath,IDataBaseHandler dataBaseHandler)
         {
             if (obj.ValideMetadata(new TestableMessageBox()))
             {
                 try
                 {
-                    
-                    xmlControl.SaveData(obj, targetPath + BACKSLASH + GetFileNameMetadata(currentGuid));
+
+                    dataBaseHandler.SaveData(obj, targetPath + BACKSLASH + GetFileNameMetadata(currentGuid));
                     return true;
                 }
                 catch (Exception ex)
@@ -69,6 +110,24 @@ namespace ZbW.Testing.Dms.Client.Services
             {
                 return false;
             }
+        }
+
+        private MetadataItem LoadMetaData(string fileName, IDataBaseHandler dataBaseHandler)
+        {
+           
+                try
+                {
+
+                    return dataBaseHandler.LoadData(fileName);
+                   
+                }
+                catch (Exception ex)
+                {
+                    var testableMessageBox = new TestableMessageBox();
+                    testableMessageBox.Show(ex.Message);
+                    return null;
+                }
+            
         }
 
         private bool CreateContentFile(string sourcePath, string targetPath)
@@ -85,12 +144,12 @@ namespace ZbW.Testing.Dms.Client.Services
 
         private string GetFileNameContent(string currentGuid)
         {
-            return guid.NewGuid()+ FILENAMECONTENT;
+            return currentGuid + FILENAMECONTENT;
         }
 
         private string GetFileNameMetadata(string currentGuid)
         {
-            return guid.NewGuid() + FILENAMEMETADATA;
+            return currentGuid + FILENAMEMETADATA;
         }
 
         private string creatFileFolder(MetadataItem obj)

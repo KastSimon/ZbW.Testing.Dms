@@ -79,6 +79,7 @@
     <Compile Include="Model\MetadataItem.cs" />
     <Compile Include="Repositories\ComboBoxItems.cs" />
     <Compile Include="Services\FileControl.cs" />
+    <Compile Include="Services\Interface\IDataBaseHandler.cs" />
     <Compile Include="Services\XmlControl.cs" />
     <Compile Include="TestableObjects\TestableDirectory.cs" />
     <Compile Include="TestableObjects\TestableFile.cs" />

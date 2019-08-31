@@ -1,4 +1,6 @@
-﻿namespace ZbW.Testing.Dms.Client.ViewModels
+﻿using ZbW.Testing.Dms.Client.Services;
+
+namespace ZbW.Testing.Dms.Client.ViewModels
 {
     using System.Collections.Generic;
 
@@ -7,6 +9,7 @@
 
     using ZbW.Testing.Dms.Client.Model;
     using ZbW.Testing.Dms.Client.Repositories;
+    using ZbW.Testing.Dms.Client.TestableObjects;
 
     internal class SearchViewModel : BindableBase
     {
@@ -20,13 +23,17 @@
 
         private List<string> _typItems;
 
-        public SearchViewModel()
+        private FileControl fileControl;
+
+        public SearchViewModel(FileControl fileControl)
         {
             TypItems = ComboBoxItems.Typ;
 
             CmdSuchen = new DelegateCommand(OnCmdSuchen);
             CmdReset = new DelegateCommand(OnCmdReset);
             CmdOeffnen = new DelegateCommand(OnCmdOeffnen, OnCanCmdOeffnen);
+
+            this.fileControl = fileControl;
         }
 
         public DelegateCommand CmdOeffnen { get; }
@@ -115,7 +122,7 @@
 
         private void OnCmdSuchen()
         {
-            // TODO: Add your Code here
+            FilteredMetadataItems= fileControl.Search();
         }
 
         private void OnCmdReset()

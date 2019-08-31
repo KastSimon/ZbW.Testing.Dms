@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ZbW.Testing.Dms.Client.TestableObjects
 {
-    class TestableGUID
+    public class TestableGUID
     {
         public virtual Guid NewGuid()
         {

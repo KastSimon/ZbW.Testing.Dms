@@ -1,4 +1,6 @@
-﻿namespace ZbW.Testing.Dms.Client.Views
+﻿using ZbW.Testing.Dms.Client.Services;
+
+namespace ZbW.Testing.Dms.Client.Views
 {
     using System;
     using System.Windows.Controls;
@@ -10,10 +12,10 @@
     /// </summary>
     public partial class DocumentDetailView : UserControl
     {
-        public DocumentDetailView(string benutzer, Action navigateBack)
+        public DocumentDetailView(string benutzer, Action navigateBack,FileControl fileControl)
         {
             InitializeComponent();
-            DataContext = new DocumentDetailViewModel(benutzer, navigateBack);
+            DataContext = new DocumentDetailViewModel(benutzer, navigateBack, fileControl);
         }
     }
 }
