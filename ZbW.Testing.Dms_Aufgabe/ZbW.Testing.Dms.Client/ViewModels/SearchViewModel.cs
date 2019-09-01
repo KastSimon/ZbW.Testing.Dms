@@ -122,7 +122,7 @@ namespace ZbW.Testing.Dms.Client.ViewModels
 
         private void OnCmdSuchen()
         {
-            FilteredMetadataItems= fileControl.Search();
+            FilteredMetadataItems= fileControl.Search(_suchbegriff, _selectedTypItem);
         }
 
         private void OnCmdReset()

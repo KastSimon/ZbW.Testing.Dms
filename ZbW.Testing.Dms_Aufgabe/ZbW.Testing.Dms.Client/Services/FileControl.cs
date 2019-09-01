@@ -51,24 +51,33 @@ namespace ZbW.Testing.Dms.Client.Services
                 return false;
         }
 
-        public List<MetadataItem> Search()
+        public List<MetadataItem> Search(string filter1,string filter2)
         {
             if (dir.Exists(Convert.ToString(repositoryDir)))
             { 
-            fileList = new List<MetadataItem>();
-            foreach (var file in dir.GetFiles(Convert.ToString(repositoryDir), "*"+FILENAMEMETADATA, SearchOption.AllDirectories))
-            {
-                var metaDataItem = new MetadataItem();
-                metaDataItem = LoadMetaData(file,xmlControl);
-                metaDataItem.FilePath = GetFilePath(file);
-                metaDataItem.FileGuid = GetFileGuid(file);
-                if (metaDataItem != null)
+                fileList = new List<MetadataItem>();
+                foreach (var file in dir.GetFiles(Convert.ToString(repositoryDir), "*"+FILENAMEMETADATA, SearchOption.AllDirectories))
                 {
-                    fileList.Add(metaDataItem);
-                }
+                    var metaDataItem = new MetadataItem();
+                    metaDataItem = LoadMetaData(file,xmlControl);
+                    metaDataItem.FilePath = GetFilePath(file);
+                    metaDataItem.FileGuid = GetFileGuid(file);
+                    try
+                    {
+                        if (metaDataItem != null && MetadataItemFilter(metaDataItem, filter1) && MetadataItemFilter(metaDataItem, filter2))
+                        {
+                            fileList.Add(metaDataItem);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        var testableMessageBox = new TestableMessageBox();
+                        testableMessageBox.Show($"File: {metaDataItem.FileGuid} is corrupt!");
+                    }
+                
                
-            }
-            return fileList;
+                }
+                return fileList;
             }
             else
             {
@@ -76,6 +85,38 @@ namespace ZbW.Testing.Dms.Client.Services
                 testableMessageBox.Show("No File found!");
                 return null;
             }
+        }
+
+        private bool MetadataItemFilter(MetadataItem data, string requirement)
+        {
+            if (requirement == null)
+            {
+                return true;
+            }
+            else
+            {
+                if (data.Bezeichung.Contains(requirement))
+                {
+                    return true;
+                }
+                else if (data.Stichwoerter.Contains(requirement))
+                {
+                    return true;
+                }
+                else if (data.DokumentTyp.Contains(requirement))
+                {
+                    return true;
+                }
+                else if (requirement.Equals(""))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+           
         }
 
         private string GetFilePath(string fileName) //fileName must includ path
