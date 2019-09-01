@@ -1,4 +1,5 @@
-﻿using ZbW.Testing.Dms.Client.Services;
+﻿using System.ComponentModel;
+using ZbW.Testing.Dms.Client.Services;
 
 namespace ZbW.Testing.Dms.Client.ViewModels
 {
@@ -11,7 +12,7 @@ namespace ZbW.Testing.Dms.Client.ViewModels
     using ZbW.Testing.Dms.Client.Repositories;
     using ZbW.Testing.Dms.Client.TestableObjects;
 
-    internal class SearchViewModel : BindableBase
+    internal class SearchViewModel : BindableBase 
     {
         private List<MetadataItem> _filteredMetadataItems;
 
@@ -52,6 +53,7 @@ namespace ZbW.Testing.Dms.Client.ViewModels
             set
             {
                 SetProperty(ref _suchbegriff, value);
+                RaisePropertyChanged(nameof(Suchbegriff)); 
             }
         }
 
@@ -78,6 +80,7 @@ namespace ZbW.Testing.Dms.Client.ViewModels
             set
             {
                 SetProperty(ref _selectedTypItem, value);
+                RaisePropertyChanged(nameof(SelectedTypItem));
             }
         }
 
@@ -127,7 +130,12 @@ namespace ZbW.Testing.Dms.Client.ViewModels
 
         private void OnCmdReset()
         {
-            // TODO: Add your Code here
+            FilteredMetadataItems = fileControl.Reset();
+            Suchbegriff = "";
+            SelectedTypItem = "";
         }
+
+
+        
     }
 }

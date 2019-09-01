@@ -64,7 +64,7 @@ namespace ZbW.Testing.Dms.Client.Services
                     metaDataItem.FileGuid = GetFileGuid(file);
                     try
                     {
-                        if (metaDataItem != null && MetadataItemFilter(metaDataItem, filter1) && MetadataItemFilter(metaDataItem, filter2))
+                        if (MetadataItemFilter(metaDataItem, filter1) && MetadataItemFilter(metaDataItem, filter2))
                         {
                             fileList.Add(metaDataItem);
                         }
@@ -87,47 +87,10 @@ namespace ZbW.Testing.Dms.Client.Services
             }
         }
 
-        private bool MetadataItemFilter(MetadataItem data, string requirement)
+        public List<MetadataItem> Reset()
         {
-            if (requirement == null)
-            {
-                return true;
-            }
-            else
-            {
-                if (data.Bezeichung.Contains(requirement))
-                {
-                    return true;
-                }
-                else if (data.Stichwoerter.Contains(requirement))
-                {
-                    return true;
-                }
-                else if (data.DokumentTyp.Contains(requirement))
-                {
-                    return true;
-                }
-                else if (requirement.Equals(""))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-           
-        }
-
-        private string GetFilePath(string fileName) //fileName must includ path
-        {
-            return fileName.Remove(fileName.Length - MAXNUMBERS_OF_LETTERS_FILENAMEMETADATA);
-        }
-
-        private string GetFileGuid(string fileName) //fileName must includ path
-        {
-            var fileGuid = fileName.Split('\\');
-            return fileGuid[fileGuid.Length - 1].TrimEnd('_', 'M', 'e', 't', 'a', 'd', 'a', 't', 'a', '.', 'x', 'm', 'l'); 
+            fileList = new List<MetadataItem>();
+            return fileList;
         }
 
         private bool SaveMetaData(MetadataItem obj, string targetPath,IDataBaseHandler dataBaseHandler)
@@ -214,6 +177,49 @@ namespace ZbW.Testing.Dms.Client.Services
                 return repositoryDir + BACKSLASH;
             }
 
+        }
+
+        private bool MetadataItemFilter(MetadataItem data, string requirement)
+        {
+            if (requirement == null)
+            {
+                return true;
+            }
+            else
+            {
+                if (data.Bezeichung.Contains(requirement))
+                {
+                    return true;
+                }
+                else if (data.Stichwoerter.Contains(requirement))
+                {
+                    return true;
+                }
+                else if (data.DokumentTyp.Contains(requirement))
+                {
+                    return true;
+                }
+                else if (requirement.Equals(""))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+        }
+
+        private string GetFilePath(string fileName) //fileName must includ path
+        {
+            return fileName.Remove(fileName.Length - MAXNUMBERS_OF_LETTERS_FILENAMEMETADATA);
+        }
+
+        private string GetFileGuid(string fileName) //fileName must includ path
+        {
+            var fileGuid = fileName.Split('\\');
+            return fileGuid[fileGuid.Length - 1].TrimEnd('_', 'M', 'e', 't', 'a', 'd', 'a', 't', 'a', '.', 'x', 'm', 'l');
         }
 
 
