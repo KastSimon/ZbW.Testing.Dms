@@ -120,7 +120,7 @@ namespace ZbW.Testing.Dms.Client.ViewModels
 
         private void OnCmdOeffnen()
         {
-            // TODO: Add your Code here
+            fileControl.Open(_selectedMetadataItem);
         }
 
         private void OnCmdSuchen()

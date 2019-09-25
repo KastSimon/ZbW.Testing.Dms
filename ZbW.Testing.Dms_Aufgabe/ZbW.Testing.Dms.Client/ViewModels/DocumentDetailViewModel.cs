@@ -183,9 +183,15 @@ namespace ZbW.Testing.Dms.Client.ViewModels
             metadataItem.ValutaDatum = _valutaDatum;
             metadataItem.DokumentTyp = _selectedTypItem;
             metadataItem.Stichwoerter = _stichwoerter;
+            metadataItem.User = _benutzer;
 
             if(fileControl.Save(metadataItem, _filePath))
                 _navigateBack();
+
+            if (_isRemoveFileEnabled)
+            {
+                fileControl.Delete(_filePath);
+            }
             
            
            

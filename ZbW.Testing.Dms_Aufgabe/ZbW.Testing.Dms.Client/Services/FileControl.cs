@@ -19,51 +19,97 @@ namespace ZbW.Testing.Dms.Client.Services
     public class FileControl
     {
         private object repositoryDir;
+        private MetaDataControl metaDataControl = new MetaDataControl();
+        private ContentFileControl contentFileControl = new ContentFileControl();
         private XmlControl xmlControl = new XmlControl();
-        private const string BACKSLASH = "\\";
-        private const string FILENAMECONTENT = "_Content.Pdf";
-        private const string FILENAMEMETADATA = "_Metadata.xml";
         private const int MAXNUMBERS_OF_LETTERS_FILENAMEMETADATA = 49;
+        private const string BACKSLASH = "\\";
         private string currentGuid;
-        private TestableGUID guid;
-        private TestableDirectory dir;
-        private TestableFile file;
+        private TestableGUID guid = new TestableGUID();
+        private TestableDirectory dir = new TestableDirectory();
+        private TestableFile file = new TestableFile();
         private List<MetadataItem> fileList;
+        private TestableMessageBox testableMessageBox = new TestableMessageBox();
 
-        public FileControl(TestableDirectory dir, TestableGUID guid, TestableFile file)
+        public FileControl(TestableDirectory dir, TestableGUID guid, TestableFile file, MetaDataControl metaDataControl, ContentFileControl contentFileControl, TestableMessageBox testableMessageBox)
         {
             AppSettingsReader appSettingsReader = new AppSettingsReader();
             repositoryDir = appSettingsReader.GetValue("RepositoryDir", typeof(string));
             this.guid = guid;
             this.dir = dir;
             this.file = file;
+            this.metaDataControl = metaDataControl;
+            this.contentFileControl = contentFileControl;
+            this.testableMessageBox = testableMessageBox;
         }
 
-
-
-        public bool Save(MetadataItem obj,string sourcePath)
+        public FileControl()
         {
-            currentGuid = Convert.ToString(guid.NewGuid());
-            var targetPath = creatFileFolder(obj);
-            if (SaveMetaData(obj, targetPath, xmlControl) && CreateContentFile(sourcePath,targetPath))
-                return true;
-            else
-                return false;
+            AppSettingsReader appSettingsReader = new AppSettingsReader();
+            repositoryDir = appSettingsReader.GetValue("RepositoryDir", typeof(string));
         }
 
-        public List<MetadataItem> Search(string filter1,string filter2)
+        public virtual bool Save(MetadataItem obj,string sourcePath)
+        {
+            try
+            {
+                currentGuid = Convert.ToString(guid.NewGuid());
+                var targetPath = creatFileFolder(obj);
+                if (metaDataControl.Save(obj, targetPath, currentGuid, xmlControl))
+                {
+                    contentFileControl.Create(sourcePath, targetPath, currentGuid, file);
+                    return true;
+                }
+                else
+                    return false;
+            }
+            catch (ArgumentNullException ex)
+            {
+                testableMessageBox.Show("Es muss eine Datei ausgewählt werden");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                testableMessageBox.Show(ex.Message);
+                return false;
+            }
+            
+
+        }
+
+        public virtual bool Delete(string sourcePath)
+        {
+            try
+            {
+                file.Delete(sourcePath);
+                return true;
+            }
+            catch (ArgumentNullException ex)
+            {
+                testableMessageBox.Show("Es muss eine Datei ausgewählt werden");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                testableMessageBox.Show(ex.Message);
+                return false;
+            }
+        }
+
+        public virtual List<MetadataItem> Search(string filter1,string filter2)
         {
             if (dir.Exists(Convert.ToString(repositoryDir)))
             { 
                 fileList = new List<MetadataItem>();
-                foreach (var file in dir.GetFiles(Convert.ToString(repositoryDir), "*"+FILENAMEMETADATA, SearchOption.AllDirectories))
+                foreach (var file in dir.GetFiles(Convert.ToString(repositoryDir), "*"+metaDataControl.GetFileEnding, SearchOption.AllDirectories))
                 {
                     var metaDataItem = new MetadataItem();
-                    metaDataItem = LoadMetaData(file,xmlControl);
-                    metaDataItem.FilePath = GetFilePath(file);
-                    metaDataItem.FileGuid = GetFileGuid(file);
                     try
                     {
+                        metaDataItem = metaDataControl.Load(file, xmlControl);
+                        metaDataItem.FilePath = GetFilePath(file);
+                        metaDataItem.FileGuid = GetFileGuid(file);
+
                         if (MetadataItemFilter(metaDataItem, filter1) && MetadataItemFilter(metaDataItem, filter2))
                         {
                             fileList.Add(metaDataItem);
@@ -71,7 +117,6 @@ namespace ZbW.Testing.Dms.Client.Services
                     }
                     catch (Exception ex)
                     {
-                        var testableMessageBox = new TestableMessageBox();
                         testableMessageBox.Show($"File: {metaDataItem.FileGuid} is corrupt!");
                     }
                 
@@ -81,79 +126,20 @@ namespace ZbW.Testing.Dms.Client.Services
             }
             else
             {
-                var testableMessageBox = new TestableMessageBox();
                 testableMessageBox.Show("No File found!");
                 return null;
             }
         }
 
-        public List<MetadataItem> Reset()
+        public virtual List<MetadataItem> Reset()
         {
             fileList = new List<MetadataItem>();
             return fileList;
         }
 
-        private bool SaveMetaData(MetadataItem obj, string targetPath,IDataBaseHandler dataBaseHandler)
+        public virtual void Open(MetadataItem metaDataItem)
         {
-            if (obj.ValideMetadata(new TestableMessageBox()))
-            {
-                try
-                {
-
-                    dataBaseHandler.SaveData(obj, targetPath + BACKSLASH + GetFileNameMetadata(currentGuid));
-                    return true;
-                }
-                catch (Exception ex)
-                {
-                    var testableMessageBox = new TestableMessageBox();
-                    testableMessageBox.Show(ex.Message);
-                    return false;
-                }
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        private MetadataItem LoadMetaData(string fileName, IDataBaseHandler dataBaseHandler)
-        {
-           
-                try
-                {
-
-                    return dataBaseHandler.LoadData(fileName);
-                   
-                }
-                catch (Exception ex)
-                {
-                    var testableMessageBox = new TestableMessageBox();
-                    testableMessageBox.Show(ex.Message);
-                    return null;
-                }
-            
-        }
-
-        private bool CreateContentFile(string sourcePath, string targetPath)
-        {
-            var sourceFileName = sourcePath;
-            var targetFileName = targetPath + BACKSLASH + GetFileNameContent(currentGuid);
-            file.Copy(sourcePath, targetFileName);
-
-            if (file.Exists(targetFileName))
-                return true;
-            else
-                return false;
-        }
-
-        private string GetFileNameContent(string currentGuid)
-        {
-            return currentGuid + FILENAMECONTENT;
-        }
-
-        private string GetFileNameMetadata(string currentGuid)
-        {
-            return currentGuid + FILENAMEMETADATA;
+            file.Open(metaDataItem.FilePath + metaDataItem.FileGuid + contentFileControl.GetFileEnding);
         }
 
         private string creatFileFolder(MetadataItem obj)
@@ -179,7 +165,7 @@ namespace ZbW.Testing.Dms.Client.Services
 
         }
 
-        private bool MetadataItemFilter(MetadataItem data, string requirement)
+        public bool MetadataItemFilter(MetadataItem data, string requirement)
         {
             if (requirement == null)
             {
@@ -211,12 +197,12 @@ namespace ZbW.Testing.Dms.Client.Services
 
         }
 
-        private string GetFilePath(string fileName) //fileName must includ path
+        public string GetFilePath(string fileName) //fileName must includ path
         {
             return fileName.Remove(fileName.Length - MAXNUMBERS_OF_LETTERS_FILENAMEMETADATA);
         }
 
-        private string GetFileGuid(string fileName) //fileName must includ path
+        public string GetFileGuid(string fileName) //fileName must includ path
         {
             var fileGuid = fileName.Split('\\');
             return fileGuid[fileGuid.Length - 1].TrimEnd('_', 'M', 'e', 't', 'a', 'd', 'a', 't', 'a', '.', 'x', 'm', 'l');

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -18,6 +19,16 @@ namespace ZbW.Testing.Dms.Client.TestableObjects
         public virtual bool Exists(string path)
         {
             return File.Exists(path);
+        }
+
+        public virtual void Open(string path)
+        {
+            Process.Start(path);
+        }
+
+        public virtual void Delete(string path)
+        {
+            File.Delete(path);
         }
     }
 }

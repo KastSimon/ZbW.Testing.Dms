@@ -14,12 +14,6 @@
 
         private UserControl _content;
 
-        private TestableDirectory dir = new TestableDirectory();
-
-        private TestableGUID guid = new TestableGUID();
-
-        private TestableFile file = new TestableFile();
-
         private FileControl fileControl;
 
         public MainViewModel(string benutzername)
@@ -28,7 +22,7 @@
             CmdNavigateToSearch = new DelegateCommand(OnCmdNavigateToSearch);
             CmdNavigateToDocumentDetail = new DelegateCommand(OnCmdNavigateToDocumentDetail);
 
-            fileControl = new FileControl(dir, guid, file);
+            fileControl = new FileControl();
         }
 
         public string Benutzer

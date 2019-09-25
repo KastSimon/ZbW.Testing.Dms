@@ -55,6 +55,7 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Prism.Wpf.6.3.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -78,13 +79,17 @@
     </ApplicationDefinition>
     <Compile Include="Model\MetadataItem.cs" />
     <Compile Include="Repositories\ComboBoxItems.cs" />
+    <Compile Include="Services\ContentFileControl.cs" />
     <Compile Include="Services\FileControl.cs" />
     <Compile Include="Services\Interface\IDataBaseHandler.cs" />
+    <Compile Include="Services\Interface\IMetaDataControl.cs" />
+    <Compile Include="Services\MetaDataControl.cs" />
     <Compile Include="Services\XmlControl.cs" />
     <Compile Include="TestableObjects\TestableDirectory.cs" />
     <Compile Include="TestableObjects\TestableFile.cs" />
     <Compile Include="TestableObjects\TestableGUID.cs" />
     <Compile Include="TestableObjects\TestableMessageBox.cs" />
+    <Compile Include="TestableObjects\TestableXmlSerializer.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\DocumentDetailViewModel.cs" />

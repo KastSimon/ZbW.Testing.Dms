@@ -7,7 +7,7 @@ using ZbW.Testing.Dms.Client.Model;
 
 namespace ZbW.Testing.Dms.Client.Services.Interface
 {
-    interface IDataBaseHandler
+    public interface IDataBaseHandler
     {
          void SaveData(object obj, string fileName);
 

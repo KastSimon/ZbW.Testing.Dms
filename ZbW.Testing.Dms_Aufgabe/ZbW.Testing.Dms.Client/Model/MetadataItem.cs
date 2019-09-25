@@ -8,15 +8,24 @@ using ZbW.Testing.Dms.Client.TestableObjects;
 
 namespace ZbW.Testing.Dms.Client.Model
 {
-    public class MetadataItem
+     public  class MetadataItem
     {
+        private bool testmode = false;
         private string bezeichung;
         private DateTime? valutaDatum;
         private string selectedTypItems;
         private string stichwoerter;
         private string filePath;
         private string fileGuid;
+        private string user;
 
+        public MetadataItem(bool testmode)
+        {
+            this.testmode = testmode;
+        }
+
+        public MetadataItem()
+        { }
 
         public string Bezeichung
         {
@@ -54,13 +63,19 @@ namespace ZbW.Testing.Dms.Client.Model
             set { fileGuid = value; }
         }
 
-        public bool ValideMetadata(TestableMessageBox messageBox)
+        public string User
+        {
+            get { return user; }
+            set { user = value; }
+        }
+
+        public virtual bool ValideMetadata(TestableMessageBox messageBox)
         {
             if (!string.IsNullOrEmpty(bezeichung) && valutaDatum != null && !string.IsNullOrEmpty(selectedTypItems))
                 return true;
             else
-
-                messageBox.Show("Es müssen alle Pflichtfelder ausgefüllt werden");
+                if (!testmode)
+                    messageBox.Show("Es müssen alle Pflichtfelder ausgefüllt werden");
             return false;
         }
 

@@ -22,7 +22,7 @@ namespace ZbW.Testing.Dms.Library.InterfaceTests
             var metadataItem = new MetadataItem();
             metadataItem.Bezeichung = "Simon";
             metadataItem.ValutaDatum = DateTime.Now;
-            metadataItem.SelectedTypItems = "";
+            metadataItem.DokumentTyp = "";
             metadataItem.Stichwoerter = "";
             var testableMessageBoxMock = A.Fake<TestableMessageBox>();
             // act
@@ -32,9 +32,23 @@ namespace ZbW.Testing.Dms.Library.InterfaceTests
             A.CallTo(() => testableMessageBoxMock.Show("Es müssen alle Pflichtfelder ausgefüllt werden")).MustHaveHappened();
         }
 
-       
 
-      
+        [Test]
+        public void ValideMetadata_CheckDependency_TestableMessageBoxNotCalled()
+        {
+            // arrange
+            var metadataItem = new MetadataItem();
+            metadataItem.Bezeichung = "Simon";
+            metadataItem.ValutaDatum = DateTime.Now;
+            metadataItem.DokumentTyp = "Quittung";
+            metadataItem.Stichwoerter = "Test";
+            var testableMessageBoxMock = A.Fake<TestableMessageBox>();
+            // act
+            var result = metadataItem.ValideMetadata(testableMessageBoxMock);
+
+            // assert
+            A.CallTo(() => testableMessageBoxMock.Show("Es müssen alle Pflichtfelder ausgefüllt werden")).MustNotHaveHappened();
+        }
 
 
     }

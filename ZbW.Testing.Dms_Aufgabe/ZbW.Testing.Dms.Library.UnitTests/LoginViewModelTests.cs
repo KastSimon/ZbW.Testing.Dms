@@ -1,25 +1,38 @@
-﻿using ZbW.Testing.Dms.Client.Views;
+﻿using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace ZbW.Testing.Dms.Library.UnitTests
 {
+    using FakeItEasy;
     using NUnit.Framework;
+    using ZbW.Testing.Dms.Client.Model;
+    using ZbW.Testing.Dms.Client.Services;
+    using ZbW.Testing.Dms.Client.Services.Interface;
     using ZbW.Testing.Dms.Client.ViewModels;
+    using ZbW.Testing.Dms.Client.Views;
 
-    [TestFixture]
-    class LoginViewModelTests
+    [TestFixture, RequiresSTA]
+    public class LoginViewTest
     {
 
         [Test]
-        public void OnCanLogin_ValideUserName_RetrunsTrue()
+        public void LoginView_canLogin_RetrunTrue()
         {
             // arrange
-            var loginViewModel = new LoginViewModel(new LoginView());
+            LoginView loginView = new LoginView();
+            LoginViewModel loginViewModel = new LoginViewModel(loginView);
+            loginViewModel.Benutzername = "TestUser";
 
             // act
-            var result = loginViewModel.CmdLogin.CanExecute();
+            bool canLogin = loginViewModel.OnCanLogin();
 
             // assert
-            Assert.That(result, Is.True);
+            Assert.That(canLogin, Is.True);
+
         }
 
     }

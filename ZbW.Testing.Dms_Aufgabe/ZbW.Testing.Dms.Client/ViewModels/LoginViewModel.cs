@@ -40,7 +40,7 @@
             }
         }
 
-        private bool OnCanLogin()
+        public bool OnCanLogin()
         {
             return !string.IsNullOrEmpty(Benutzername);
         }
@@ -50,7 +50,7 @@
             Application.Current.Shutdown();
         }
 
-        private void OnCmdLogin()
+        public void OnCmdLogin()
         {
             if (string.IsNullOrEmpty(Benutzername))
             {

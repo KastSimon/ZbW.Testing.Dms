@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZbW.Testing.Dms.Client", "Z
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZbW.Testing.Dms.Library.UnitTests", "ZbW.Testing.Dms.Library.UnitTests\ZbW.Testing.Dms.Library.UnitTests.csproj", "{E5C4F85F-8DCA-4513-9B25-5742DAEE7E43}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZbW.Testing.Dms.Library.InterfaceTests", "ZbW.Testing.Dms.Library.InterfaceTests\ZbW.Testing.Dms.Library.InterfaceTests.csproj", "{FEC0D88C-B975-4333-8DB2-180C0136F2D9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZbW.Testing.Dms.Library.IntegrationsTests", "ZbW.Testing.Dms.Library.InterfaceTests\ZbW.Testing.Dms.Library.IntegrationsTests.csproj", "{FEC0D88C-B975-4333-8DB2-180C0136F2D9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

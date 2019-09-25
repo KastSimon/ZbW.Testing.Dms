@@ -22,7 +22,7 @@ namespace ZbW.Testing.Dms.Library.UnitTests
             var metadataItem = new MetadataItem();
             metadataItem.Bezeichung = "Simon";
             metadataItem.ValutaDatum = DateTime.Now;
-            metadataItem.SelectedTypItems = "Beleg";
+            metadataItem.DokumentTyp = "Beleg";
             metadataItem.Stichwoerter = "Test01";
             var testableMessageBoxStub = A.Fake<TestableMessageBox>();
             // act
@@ -39,7 +39,7 @@ namespace ZbW.Testing.Dms.Library.UnitTests
             var metadataItem = new MetadataItem();
             metadataItem.Bezeichung = "Simon";
             metadataItem.ValutaDatum = DateTime.Now;
-            metadataItem.SelectedTypItems = "Beleg";
+            metadataItem.DokumentTyp = "Beleg";
             metadataItem.Stichwoerter = "";
             var testableMessageBoxStub = A.Fake<TestableMessageBox>();
             // act
@@ -56,7 +56,7 @@ namespace ZbW.Testing.Dms.Library.UnitTests
             var metadataItem = new MetadataItem();
             metadataItem.Bezeichung = "";
             metadataItem.ValutaDatum = DateTime.Now;
-            metadataItem.SelectedTypItems = "Beleg";
+            metadataItem.DokumentTyp = "Beleg";
             metadataItem.Stichwoerter = "Test01";
             var testableMessageBoxStub = A.Fake<TestableMessageBox>();
             // act
@@ -73,7 +73,7 @@ namespace ZbW.Testing.Dms.Library.UnitTests
             var metadataItem = new MetadataItem();
             metadataItem.Bezeichung = "Simon";
             metadataItem.ValutaDatum = null;
-            metadataItem.SelectedTypItems = "Beleg";
+            metadataItem.DokumentTyp = "Beleg";
             metadataItem.Stichwoerter = "Test01";
             var testableMessageBoxStub = A.Fake<TestableMessageBox>();
             // act
@@ -90,7 +90,7 @@ namespace ZbW.Testing.Dms.Library.UnitTests
             var metadataItem = new MetadataItem();
             metadataItem.Bezeichung = "Simon";
             metadataItem.ValutaDatum = DateTime.Now;
-            metadataItem.SelectedTypItems = "";
+            metadataItem.DokumentTyp = "";
             metadataItem.Stichwoerter = "Test01";
             var testableMessageBoxStub = A.Fake<TestableMessageBox>();
             // act
